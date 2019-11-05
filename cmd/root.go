@@ -3,17 +3,12 @@ package cmd
 import (
     "errors"
     "fmt"
-    ucbapi "github.com/saltatory/go-appstoreconnect-cli/api"
-    "github.com/dgrijalva/jwt-go"
+    _ "github.com/saltatory/go-appstoreconnect-cli/api"
+    jwt "github.com/dgrijalva/jwt-go"
     "github.com/spf13/cobra"
     "github.com/spf13/viper"
     "os"
     "time"
-)
-jwt
-    "github.com/spf13/cobra"
-    "github.com/spf13/viper"
-    "os"
 )
 
 const ASC_PRIVATE_KEY_ID = "ASC_PRIVATE_KEY_ID"
