@@ -1,0 +1,3396 @@
+openapi: 3.0.0
+info:
+  description: The App Store Connect API is a REST API used to build custom workflows
+    as part of your app development life cycle and automate actions you take in App
+    Store Connect. Use of the API requires authorization via JSON Web Tokens (JWT);
+    you obtain keys to create the tokens from your organization’s App Store Connect
+    account. See Creating API Keys for App Store Connect API to create your keys and
+    tokens.
+  title: App Store Connect API
+  version: 1.0.0
+servers:
+- url: http://api.appstoreconnect.apple.com/v1
+tags:
+- description: Resources to manage your beta testing program.
+  externalDocs:
+    description: see more
+    url: https://developer.apple.com/documentation/appstoreconnectapi/testflight
+  name: TestFlight
+- description: Users on your App Store Connect team.
+  externalDocs:
+    description: see more
+    url: https://developer.apple.com/documentation/appstoreconnectapi/users
+  name: Users
+- description: Email invitations for joining your App Store Connect team.
+  externalDocs:
+    description: see more
+    url: https://developer.apple.com/documentation/appstoreconnectapi/user_invitations
+  name: User Invitations
+- description: Download your sales and financial reports.
+  externalDocs:
+    description: see more
+    url: https://developer.apple.com/documentation/appstoreconnectapi/sales_and_finance_reports
+  name: Sales and Finance Reports
+paths:
+  /betaTesters:
+    delete:
+      description: Remove a beta tester's ability to test all apps.
+      operationId: DeleteBetaTester
+      parameters:
+      - description: (Required) An opaque resource ID that uniquely identifies the
+          resource
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        204:
+          description: No Content
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Bad Request. An error occurred with your request.
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Forbitten. Request not authorized.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Forbitten. Request not authorized.
+        409:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Conflict. The provided resource data is not valid.
+      summary: Delete a Beta Tester
+      tags:
+      - TestFlight
+    get:
+      description: Find and list beta testers for all apps, builds, and beta groups.
+      operationId: listBetaTester
+      parameters:
+      - description: Fields to return for included related types.
+        explode: true
+        in: query
+        name: fields[app]
+        required: false
+        schema:
+          items:
+            enum:
+            - betaAppLocalizations
+            - betaAppReviewDetail
+            - betaGroups
+            - betaLicenseAgreement
+            - betaTesters
+            - builds
+            - bundleId
+            - name
+            - preReleaseVersions
+            - primaryLocale
+            - skumore
+            type: string
+          type: array
+        style: form
+      - description: Fields to return for included related types.
+        explode: true
+        in: query
+        name: fields[betaGroups]
+        required: false
+        schema:
+          items:
+            enum:
+            - app
+            - betaTesters
+            - builds
+            - createdDate
+            - isInternalGroup
+            - name
+            - publicLink
+            - publicLinkEnabled
+            - publicLinkId
+            - publicLinkLimit
+            - publicLinkLimitEnabledmore
+            type: string
+          type: array
+        style: form
+      - description: Fields to return for included related types.
+        explode: true
+        in: query
+        name: fields[betaTesters]
+        required: false
+        schema:
+          items:
+            enum:
+            - apps
+            - betaGroups
+            - builds
+            - email
+            - firstName
+            - inviteType
+            - lastName
+            type: string
+          type: array
+        style: form
+      - description: Fields to return for included related types.
+        explode: true
+        in: query
+        name: fields[builds]
+        required: false
+        schema:
+          items:
+            enum:
+            - app
+            - appEncryptionDeclaration
+            - betaAppReviewSubmission
+            - betaBuildLocalizations
+            - betaGroups
+            - buildBetaDetail
+            - expirationDate
+            - expired
+            - iconAssetToken
+            - individualTesters
+            - minOsVersion
+            - preReleaseVersion
+            - processingState
+            - uploadedDate
+            - usesNonExemptEncryption
+            - versionmore
+            type: string
+          type: array
+        style: form
+      - description: Attributes, relationships, and IDs by which to filter.
+        explode: true
+        in: query
+        name: filter[apps]
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Attributes, relationships, and IDs by which to filter.
+        explode: true
+        in: query
+        name: filter[betaGroups]
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Attributes, relationships, and IDs by which to filter.
+        explode: true
+        in: query
+        name: filter[builds]
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Attributes, relationships, and IDs by which to filter.
+        explode: true
+        in: query
+        name: filter[email]
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Attributes, relationships, and IDs by which to filter.
+        explode: true
+        in: query
+        name: filter[firstName]
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Attributes, relationships, and IDs by which to filter.
+        explode: true
+        in: query
+        name: filter[inviteType]
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Attributes, relationships, and IDs by which to filter.
+        explode: true
+        in: query
+        name: filter[lastName]
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          items:
+            enum:
+            - apps
+            - betaGroups
+            - builds
+            type: string
+          type: array
+        style: form
+      - description: Number of resources to return. Maximum is 200
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Number of resources to return. Maximum is 50
+        explode: true
+        in: query
+        name: limit[apps]
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Number of resources to return. Maximum is 50
+        explode: true
+        in: query
+        name: limit[betaGroups]
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Number of resources to return. Maximum is 50
+        explode: true
+        in: query
+        name: limit[builds]
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Attributes by which to sort.
+        explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          enum:
+          - email
+          - +email
+          - -email
+          - firstName
+          - +firstName
+          - -firstName
+          - inviteType
+          - +inviteType
+          - -inviteType
+          - lastName
+          - +lastName
+          - -lastNamemore
+          type: string
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaTestersResponse'
+          description: OK
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Bad Request. An error occurred with your request.
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Forbidden. Request not authorized.
+      summary: List Beta Testers
+      tags:
+      - TestFlight
+    post:
+      description: Create a beta tester assigned to a group, a build, or an app.
+      operationId: createBetaTester
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaTesterCreateRequest'
+        description: The resource data.
+        required: true
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaTesterResponse'
+          description: Created
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Bad Request. An error occurred with your request.
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Forbitten. Request not authorized.
+        409:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Conflict. The provided resource data is not valid.
+      summary: Create a Beta Tester
+      tags:
+      - TestFlight
+  /betaTesters/{id}:
+    get:
+      description: Get a specific beta tester.
+      operationId: readBetaTester
+      parameters:
+      - description: (Required) An opaque resource ID that uniquely identifies the
+          resource.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Fields to return for included related types.
+        explode: true
+        in: query
+        name: fields[app]
+        required: false
+        schema:
+          items:
+            enum:
+            - betaAppLocalizations
+            - betaAppReviewDetail
+            - betaGroups
+            - betaLicenseAgreement
+            - betaTesters
+            - builds
+            - bundleId
+            - name
+            - preReleaseVersions
+            - primaryLocale
+            - skumore
+            type: string
+          type: array
+        style: form
+      - description: Fields to return for included related types.
+        explode: true
+        in: query
+        name: fields[betaGroups]
+        required: false
+        schema:
+          items:
+            enum:
+            - app
+            - betaTesters
+            - builds
+            - createdDate
+            - isInternalGroup
+            - name
+            - publicLink
+            - publicLinkEnabled
+            - publicLinkId
+            - publicLinkLimit
+            - publicLinkLimitEnabledmore
+            type: string
+          type: array
+        style: form
+      - description: Fields to return for included related types.
+        explode: true
+        in: query
+        name: fields[betaTesters]
+        required: false
+        schema:
+          items:
+            enum:
+            - apps
+            - betaGroups
+            - builds
+            - email
+            - firstName
+            - inviteType
+            - lastName
+            type: string
+          type: array
+        style: form
+      - description: Fields to return for included related types.
+        explode: true
+        in: query
+        name: fields[builds]
+        required: false
+        schema:
+          items:
+            enum:
+            - app
+            - appEncryptionDeclaration
+            - betaAppReviewSubmission
+            - betaBuildLocalizations
+            - betaGroups
+            - buildBetaDetail
+            - expirationDate
+            - expired
+            - iconAssetToken
+            - individualTesters
+            - minOsVersion
+            - preReleaseVersion
+            - processingState
+            - uploadedDate
+            - usesNonExemptEncryption
+            - versionmore
+            type: string
+          type: array
+        style: form
+      - description: Attributes, relationships, and IDs by which to filter.
+        explode: true
+        in: query
+        name: filter[apps]
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Attributes, relationships, and IDs by which to filter.
+        explode: true
+        in: query
+        name: filter[betaGroups]
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Attributes, relationships, and IDs by which to filter.
+        explode: true
+        in: query
+        name: filter[builds]
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Attributes, relationships, and IDs by which to filter.
+        explode: true
+        in: query
+        name: filter[email]
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Attributes, relationships, and IDs by which to filter.
+        explode: true
+        in: query
+        name: filter[firstName]
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Attributes, relationships, and IDs by which to filter.
+        explode: true
+        in: query
+        name: filter[inviteType]
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Attributes, relationships, and IDs by which to filter.
+        explode: true
+        in: query
+        name: filter[lastName]
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          items:
+            enum:
+            - apps
+            - betaGroups
+            - builds
+            type: string
+          type: array
+        style: form
+      - description: Number of resources to return. Maximum is 200
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Number of resources to return. Maximum is 50
+        explode: true
+        in: query
+        name: limit[apps]
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Number of resources to return. Maximum is 50
+        explode: true
+        in: query
+        name: limit[betaGroups]
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Number of resources to return. Maximum is 50
+        explode: true
+        in: query
+        name: limit[builds]
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Attributes by which to sort.
+        explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          enum:
+          - email
+          - +email
+          - -email
+          - firstName
+          - +firstName
+          - -firstName
+          - inviteType
+          - +inviteType
+          - -inviteType
+          - lastName
+          - +lastName
+          - -lastNamemore
+          type: string
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaTesterResponse'
+          description: OK
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Bad Request. An error occurred with your request.
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Forbidden. Request not authorized.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Not Found. Resource not found.
+      summary: Read Beta Tester Information
+      tags:
+      - TestFlight
+  /betaTesters/{id}/relationships/betaGroups:
+    delete:
+      description: Remove a specific beta tester from one or more beta groups, revoking
+        their access to test builds associated with those groups.
+      operationId: RemoveBetaTesterFromBetaGroups
+      parameters:
+      - description: (Required) An opaque resource ID that uniquely identifies the
+          resource.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaTesterBetaGroupsLinkagesRequest'
+      responses:
+        204:
+          description: No Content
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Forbidden. Request not authorized.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Not Found. Resource not found.
+        409:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Conflict. The provided resource data is not valid.
+      summary: Remove a Beta Tester from Beta Groups
+      tags:
+      - TestFlight
+    post:
+      description: Add one or more beta testers to a specific beta group.
+      operationId: addBetaTester
+      parameters:
+      - description: (Required) An opaque resource ID that uniquely identifies the
+          resource.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaTesterBetaGroupsLinkagesRequest'
+      responses:
+        204:
+          description: No Content
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Forbidden. Request not authorized.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Not Found. Resource not found.
+        409:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Conflict. The provided resource data is not valid.
+      summary: Add a Beta Tester to Beta Groups
+      tags:
+      - TestFlight
+  /betaTesters/{id}/relationships/builds:
+    delete:
+      description: Remove an individually assigned beta tester's ability to test a
+        build.
+      operationId: unassignBetaTesterFromBuilds
+      parameters:
+      - description: (Required) An opaque resource ID that uniquely identifies the
+          resource.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaTesterBuildsLinkagesRequest'
+      responses:
+        204:
+          description: No Content
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Forbidden. Request not authorized.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Not Found. Resource not found.
+        409:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Conflict. The provided resource data is not valid.
+      summary: Individually Unassign a Beta Tester from Builds
+      tags:
+      - TestFlight
+    get:
+      description: Get a list of build resource IDs individually assigned to a specific
+        beta tester.
+      operationId: getAllBuildsAssignedToBetaTester
+      parameters:
+      - description: (Required) An opaque resource ID that uniquely identifies the
+          resource.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Number of resources to return. Maximum is 200.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaTesterBuildsLinkagesResponse'
+          description: OK
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Bad Request. An error occurred with your request.
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Forbidden. Request not authorized.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Not Found. Resource not found.
+      summary: Get All IDs of Builds Individually Assigned to a Beta Tester
+      tags:
+      - TestFlight
+    post:
+      description: Individually assign a beta tester to a build.
+      operationId: assignBetaTesterToBuilds
+      parameters:
+      - description: (Required) An opaque resource ID that uniquely identifies the
+          resource.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaTesterBuildsLinkagesRequest'
+      responses:
+        204:
+          description: No Content
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Forbidden. Request not authorized.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Not Found. Resource not found.
+        409:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Conflict. The provided resource data is not valid.
+      summary: Individually Assign a Beta Tester to Builds
+      tags:
+      - TestFlight
+  /betaTesters/{id}/relationships/apps:
+    delete:
+      description: Remove a specific beta tester's access to test any builds of one
+        or more apps.
+      operationId: removeBetaTesterAccessToApps
+      parameters:
+      - description: (Required) An opaque resource ID that uniquely identifies the
+          resource.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaTesterAppsLinkagesRequest'
+      responses:
+        204:
+          description: No Content
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Forbidden. Request not authorized.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Not Found. Resource not found.
+        409:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Conflict. The provided resource data is not valid.
+      summary: Remove a Beta Tester’s Access to Apps
+      tags:
+      - TestFlight
+    get:
+      description: Get a list of app resource IDs associated with a beta tester.
+      operationId: getAllAppResourceIdsForBetaTester
+      parameters:
+      - description: (Required) An opaque resource ID that uniquely identifies the
+          resource.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Maximum is 200
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaTesterAppsLinkagesResponse'
+          description: OK
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Bad Request. An error occurred with your request.
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Forbidden. Request not authorized.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Not Found. Resource not found.
+      summary: Get All App Resource IDs for a Beta Tester
+      tags:
+      - TestFlight
+  /betaTesters/{id}/apps:
+    get:
+      description: Get a list of apps that a beta tester can test.
+      operationId: listAllAppsForBetaTester
+      parameters:
+      - description: (Required) An opaque resource ID that uniquely identifies the
+          resource.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Number of resources to return. Maximum is 200.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Fields to return for included related types.
+        explode: true
+        in: query
+        name: fields[apps]
+        required: false
+        schema:
+          items:
+            enum:
+            - betaAppLocalizations
+            - betaAppReviewDetail
+            - betaGroups
+            - betaLicenseAgreement
+            - betaTesters
+            - builds
+            - bundleId
+            - name
+            - preReleaseVersions
+            - primaryLocale
+            - skumore
+            type: string
+          type: array
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppsResponse'
+          description: OK
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Bad Request. An error occurred with your request.
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Forbidden. Request not authorized.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Not Found. Resource not found.
+      summary: List All Apps for a Beta Tester
+      tags:
+      - TestFlight
+  /betaTesters/{id}/builds:
+    get:
+      description: Get a list of builds individually assigned to a specific beta tester.
+      operationId: listAllBuildsAssignedToBetaTester
+      parameters:
+      - description: (Required) An opaque resource ID that uniquely identifies the
+          resource.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Number of resources to return. Maximum is 200.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Fields to return for included related types.
+        explode: true
+        in: query
+        name: fields[builds]
+        required: false
+        schema:
+          items:
+            enum:
+            - app
+            - appEncryptionDeclaration
+            - betaAppReviewSubmission
+            - betaBuildLocalizations
+            - betaGroups
+            - buildBetaDetail
+            - expirationDate
+            - expired
+            - iconAssetToken
+            - individualTesters
+            - minOsVersion
+            - preReleaseVersion
+            - processingState
+            - uploadedDate
+            - usesNonExemptEncryption
+            - versionmore
+            type: string
+          type: array
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuildsResponse'
+          description: OK
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Bad Request. An error occurred with your request.
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Forbidden. Request not authorized.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Not Found. Resource not found.
+      summary: List All Builds Individually Assigned to a Beta Tester
+      tags:
+      - TestFlight
+  /betaTesterInvitations:
+    post:
+      description: Send or resend an invitation to a beta tester to test a specified
+        app.
+      operationId: sendInvitationToBetaTester
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaTesterInvitationCreateRequest'
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaTesterInvitationResponse'
+          description: Created
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Bad Request. An error occurred with your request.
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Forbidden. Request not authorized.
+        409:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Conflict. The provided resource data is not valid.
+      summary: Send an Invitation to a Beta Tester
+      tags:
+      - TestFlight
+  /betaGroups:
+    post:
+      description: Create a beta group associated with an app, optionally enabling
+        TestFlight public links.
+      operationId: createBetaGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaGroupCreateRequest'
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaGroupResponse'
+          description: Created
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Bad Request. An error occurred with your request.
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Forbidden. Request not authorized.
+        409:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Conflict. The provided resource data is not valid.
+      summary: Create a Beta Group
+      tags:
+      - TestFlight
+  /betaGroups/{id}:
+    patch:
+      description: Modify a beta group's metadata, including changing its Testflight
+        public link status.
+      operationId: ModifyBetaGroup
+      parameters:
+      - description: (Required) An opaque resource ID that uniquely identifies the
+          resource.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaGroupUpdateRequest'
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaGroupResponse'
+          description: OK
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Bad Request. An error occurred with your request.
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Forbidden. Request not authorized.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Not Found. Resource not found.
+        409:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonErrorResponse'
+          description: Conflict. The provided resource data is not valid.
+      summary: Modify a Beta Group
+      tags:
+      - TestFlight
+components:
+  schemas:
+    App:
+      properties:
+        attributes:
+          $ref: '#/components/schemas/App.Attributes'
+        id:
+          description: The opaque resource ID that uniquely identifies the resource.
+          type: string
+        relationships:
+          $ref: '#/components/schemas/App.Relationships'
+        type:
+          example: apps
+          type: string
+        links:
+          $ref: '#/components/schemas/ResourceLinks'
+      required:
+      - id
+    App.Attributes:
+      properties:
+        bundleId:
+          description: The bundle ID for your app. This ID must match the one you
+            use in Xcode. The bundle ID cannot be changed after you upload your first
+            build.
+          type: string
+        name:
+          description: The name of your app as it will appear in the App Store. The
+            maximum length is 30 characters.
+          type: string
+        primaryLocale:
+          description: The primary locale for your app. If localized app information
+            isn’t available in an App Store territory, the information from your primary
+            language is used instead.
+          type: string
+        sky:
+          description: A unique ID for your app that is not visible on the App Store.
+          type: string
+    App.Relationships:
+      properties:
+        betaLicenseAgreement:
+          $ref: '#/components/schemas/App.Relationships.BetaLicenseAgreement'
+        preReleaseVersions:
+          $ref: '#/components/schemas/App.Relationships.PreReleaseVersions'
+        betaAppLocalizations:
+          $ref: '#/components/schemas/App.Relationships.BetaAppLocalizations'
+        betaGroups:
+          $ref: '#/components/schemas/App.Relationships.BetaGroups'
+        betaTesters:
+          $ref: '#/components/schemas/App.Relationships.BetaTesters'
+        builds:
+          $ref: '#/components/schemas/App.Relationships.Builds'
+        betaAppReviewDetail:
+          $ref: '#/components/schemas/App.Relationships.BetaAppReviewDetail'
+    App.Relationships.BetaLicenseAgreement:
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+    App.Relationships.PreReleaseVersions:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CommonData'
+          type: array
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+    App.Relationships.BetaAppLocalizations:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CommonData'
+          type: array
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+    App.Relationships.BetaGroups:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CommonData'
+          type: array
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+    App.Relationships.BetaTesters:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CommonData'
+          type: array
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+    App.Relationships.Builds:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CommonData'
+          type: array
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+    App.Relationships.BetaAppReviewDetail:
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+    AppsResponse:
+      description: A response containing a list of resources.
+      example:
+        include: ""
+        data:
+          relationships:
+            app:
+              data:
+                id: id
+                type: type
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            individualTesters:
+              data:
+                id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            betaGroups:
+              data:
+                id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            preReleaseVersion:
+              data:
+                id: id
+                type: type
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            betaAppReviewSubmission:
+              data:
+                id: id
+                type: type
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            appEncryptionDeclaration:
+              data:
+                id: id
+                type: type
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            buildBetaDetail:
+              data:
+                id: id
+                type: type
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            betaBuildLocalizations:
+              data:
+                id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+          attributes:
+            minOsVersion: minOsVersion
+            processingState: PROCESSING
+            expired: true
+            iconAssetToken:
+              width: 6
+              templateUrl: templateUrl
+              height: 0
+            usesNonExemptEncryption: true
+            uploadedDate: uploadedDate
+            version: version
+            expirationDate: expirationDate
+          links:
+            self: https://openapi-generator.tech
+          id: id
+          type: builds
+        meta:
+          paging:
+            total: 0
+            limit: 6
+        links:
+          next: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+          first: https://openapi-generator.tech
+      properties:
+        data:
+          $ref: '#/components/schemas/Build'
+        include:
+          oneOf:
+          - $ref: '#/components/schemas/BetaGroup'
+          - $ref: '#/components/schemas/PrereleaseVersion'
+          - $ref: '#/components/schemas/BetaAppLocalization'
+          - $ref: '#/components/schemas/Build'
+          - $ref: '#/components/schemas/BetaLicenseAgreement'
+          - $ref: '#/components/schemas/BetaAppReviewDetail'
+        links:
+          $ref: '#/components/schemas/PagedDocumentLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+      required:
+      - data
+      - links
+    BetaGroup:
+      example:
+        relationships:
+          app:
+            data:
+              id: id
+              type: type
+            links:
+              related: https://openapi-generator.tech
+              self: https://openapi-generator.tech
+          builds:
+            data:
+              id: id
+              type: type
+            meta:
+              paging:
+                total: 0
+                limit: 6
+            links:
+              related: https://openapi-generator.tech
+              self: https://openapi-generator.tech
+          betaTesters:
+            data:
+              id: id
+              type: type
+            meta:
+              paging:
+                total: 0
+                limit: 6
+            links:
+              related: https://openapi-generator.tech
+              self: https://openapi-generator.tech
+        attributes:
+          publicLinkLimit: 0
+          publicLink: https://openapi-generator.tech
+          publicLinkEnabled: true
+          createdDate: 2000-01-23T04:56:07.000+00:00
+          publicLinkId: publicLinkId
+          isInternalGroup: true
+          name: name
+          publicLinkLimitEnabled: true
+        links:
+          self: https://openapi-generator.tech
+        id: id
+        type: apps
+      properties:
+        attributes:
+          $ref: '#/components/schemas/BetaGroup.Attributes'
+        id:
+          description: The opaque resource ID that uniquely identifies the resource.
+          type: string
+        relationships:
+          $ref: '#/components/schemas/BetaGroup.Relationships'
+        type:
+          example: apps
+          type: string
+        links:
+          $ref: '#/components/schemas/ResourceLinks'
+      required:
+      - id
+    BetaGroup.Attributes:
+      description: Attributes that describe a resource.
+      example:
+        publicLinkLimit: 0
+        publicLink: https://openapi-generator.tech
+        publicLinkEnabled: true
+        createdDate: 2000-01-23T04:56:07.000+00:00
+        publicLinkId: publicLinkId
+        isInternalGroup: true
+        name: name
+        publicLinkLimitEnabled: true
+      properties:
+        isInternalGroup:
+          description: A Boolean value that indicates whether the group is internal.
+            Only existing users of App Store Connect may be added for internal beta
+            testing.
+          type: boolean
+        name:
+          description: The name for the beta group.
+          type: string
+        publicLink:
+          description: The URL of the public link provided to your app's beta testers.
+          format: uri
+          type: string
+        publicLinkEnabled:
+          description: A Boolean value that indicates whether a public link is enabled.
+            Enabling a link allows you to invite anyone outside of your team to beta
+            test your app. When you share this link, testers will be able to install
+            the beta version of your app on their devices in TestFlight and share
+            the link with others.
+          type: boolean
+        publicLinkId:
+          description: The ID as part of the URL of the public link.
+          type: string
+        publicLinkLimit:
+          description: The maximum number of testers that can join this beta group
+            using the public link. Values must be between 1 and 10,000.
+          type: integer
+        publicLinkLimitEnabled:
+          description: A Boolean value that limits the number of testers who can join
+            the beta group using the public link.
+          type: boolean
+        createdDate:
+          description: The creation date of the beta group.
+          format: date-time
+          type: string
+    BetaGroup.Relationships:
+      example:
+        app:
+          data:
+            id: id
+            type: type
+          links:
+            related: https://openapi-generator.tech
+            self: https://openapi-generator.tech
+        builds:
+          data:
+            id: id
+            type: type
+          meta:
+            paging:
+              total: 0
+              limit: 6
+          links:
+            related: https://openapi-generator.tech
+            self: https://openapi-generator.tech
+        betaTesters:
+          data:
+            id: id
+            type: type
+          meta:
+            paging:
+              total: 0
+              limit: 6
+          links:
+            related: https://openapi-generator.tech
+            self: https://openapi-generator.tech
+      properties:
+        app:
+          $ref: '#/components/schemas/BetaGroup.Relationships.App'
+        betaTesters:
+          $ref: '#/components/schemas/BetaGroup.Relationships.BetaTesters'
+        builds:
+          $ref: '#/components/schemas/BetaGroup.Relationships.Builds'
+    BetaGroup.Relationships.App:
+      example:
+        data:
+          id: id
+          type: type
+        links:
+          related: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+    BetaGroup.Relationships.BetaTesters:
+      example:
+        data:
+          id: id
+          type: type
+        meta:
+          paging:
+            total: 0
+            limit: 6
+        links:
+          related: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+    BetaGroup.Relationships.Builds:
+      example:
+        data:
+          id: id
+          type: type
+        meta:
+          paging:
+            total: 0
+            limit: 6
+        links:
+          related: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+    BetaTesterCreateRequest:
+      example:
+        data:
+          relationships:
+            betaGroups:
+              data:
+              - id: id
+                type: type
+              - id: id
+                type: type
+            builds:
+              data:
+              - id: id
+                type: builds
+              - id: id
+                type: builds
+          attributes:
+            firstName: firstName
+            lastName: lastName
+            email: email
+          type: type
+      properties:
+        data:
+          $ref: '#/components/schemas/BetaTesterCreateRequest.Data'
+    BetaTesterCreateRequest.Data:
+      example:
+        relationships:
+          betaGroups:
+            data:
+            - id: id
+              type: type
+            - id: id
+              type: type
+          builds:
+            data:
+            - id: id
+              type: builds
+            - id: id
+              type: builds
+        attributes:
+          firstName: firstName
+          lastName: lastName
+          email: email
+        type: type
+      properties:
+        attributes:
+          $ref: '#/components/schemas/BetaTesterCreateRequest.Data.Attributes'
+        relationships:
+          $ref: '#/components/schemas/BetaTesterCreateRequest.Data.Relationships'
+        type:
+          description: The resource type.
+          type: string
+      required:
+      - type
+    BetaTesterCreateRequest.Data.Attributes:
+      description: Attributes that describe a resource.
+      example:
+        firstName: firstName
+        lastName: lastName
+        email: email
+      properties:
+        email:
+          format: email
+          type: string
+        firstName:
+          description: The beta tester's first name.
+          type: string
+        lastName:
+          description: The beta tester's last name.
+          type: string
+      required:
+      - email
+      type: object
+    BetaTesterCreateRequest.Data.Relationships:
+      description: The types and IDs of the related data to update.
+      example:
+        betaGroups:
+          data:
+          - id: id
+            type: type
+          - id: id
+            type: type
+        builds:
+          data:
+          - id: id
+            type: builds
+          - id: id
+            type: builds
+      properties:
+        betaGroups:
+          $ref: '#/components/schemas/BetaTesterCreateRequest.Data.Relationships.BetaGroups'
+        builds:
+          $ref: '#/components/schemas/BetaTesterCreateRequest.Data.Relationships.Builds'
+      type: object
+    BetaTesterCreateRequest.Data.Relationships.BetaGroups:
+      example:
+        data:
+        - id: id
+          type: type
+        - id: id
+          type: type
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/BetaTesterCreateRequest.Data.Relationships.BetaGroups.Data'
+          type: array
+      type: object
+    BetaTesterCreateRequest.Data.Relationships.BetaGroups.Data:
+      example:
+        id: id
+        type: type
+      properties:
+        id:
+          description: The opaque resource ID that uniquely identifies the resource.
+          type: string
+        type:
+          description: The resource type.
+          type: string
+      required:
+      - id
+      - type
+    BetaTesterCreateRequest.Data.Relationships.Builds:
+      example:
+        data:
+        - id: id
+          type: builds
+        - id: id
+          type: builds
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/BetaTesterCreateRequest.Data.Relationships.Builds.Data'
+          type: array
+      type: object
+    BetaTesterCreateRequest.Data.Relationships.Builds.Data:
+      example:
+        id: id
+        type: builds
+      properties:
+        id:
+          description: The opaque resource ID that uniquely identifies the resource.
+          type: string
+        type:
+          description: The resource type.
+          example: builds
+          type: string
+      required:
+      - id
+      - type
+    BetaTesterResponse:
+      example:
+        include: ""
+        data:
+          relationships:
+            betaGroups:
+              data:
+              - id: id
+                type: type
+              - id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            builds:
+              data:
+              - id: id
+                type: type
+              - id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            apps:
+              data:
+              - id: id
+                type: type
+              - id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+          attributes:
+            firstName: firstName
+            lastName: lastName
+            email: email
+          links:
+            self: https://openapi-generator.tech
+          id: id
+          type: betaTesters
+        links:
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          $ref: '#/components/schemas/BetaTester'
+        include:
+          oneOf:
+          - $ref: '#/components/schemas/App'
+          - $ref: '#/components/schemas/BetaGroup'
+          - $ref: '#/components/schemas/Build'
+        links:
+          $ref: '#/components/schemas/DocumentLinks'
+    BetaTestersResponse:
+      description: A response containing a list of resources.
+      example:
+        include: ""
+        data:
+        - relationships:
+            betaGroups:
+              data:
+              - id: id
+                type: type
+              - id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            builds:
+              data:
+              - id: id
+                type: type
+              - id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            apps:
+              data:
+              - id: id
+                type: type
+              - id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+          attributes:
+            firstName: firstName
+            lastName: lastName
+            email: email
+          links:
+            self: https://openapi-generator.tech
+          id: id
+          type: betaTesters
+        - relationships:
+            betaGroups:
+              data:
+              - id: id
+                type: type
+              - id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            builds:
+              data:
+              - id: id
+                type: type
+              - id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            apps:
+              data:
+              - id: id
+                type: type
+              - id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+          attributes:
+            firstName: firstName
+            lastName: lastName
+            email: email
+          links:
+            self: https://openapi-generator.tech
+          id: id
+          type: betaTesters
+        meta:
+          paging:
+            total: 0
+            limit: 6
+        links:
+          next: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+          first: https://openapi-generator.tech
+      properties:
+        data:
+          description: (Required) The resource data.
+          items:
+            $ref: '#/components/schemas/BetaTester'
+          type: array
+        include:
+          description: The requested relationship data.
+          oneOf:
+          - $ref: '#/components/schemas/App'
+          - $ref: '#/components/schemas/BetaGroup'
+          - $ref: '#/components/schemas/Build'
+        links:
+          $ref: '#/components/schemas/PagedDocumentLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+      required:
+      - data
+    BetaTester:
+      example:
+        relationships:
+          betaGroups:
+            data:
+            - id: id
+              type: type
+            - id: id
+              type: type
+            meta:
+              paging:
+                total: 0
+                limit: 6
+            links:
+              related: https://openapi-generator.tech
+              self: https://openapi-generator.tech
+          builds:
+            data:
+            - id: id
+              type: type
+            - id: id
+              type: type
+            meta:
+              paging:
+                total: 0
+                limit: 6
+            links:
+              related: https://openapi-generator.tech
+              self: https://openapi-generator.tech
+          apps:
+            data:
+            - id: id
+              type: type
+            - id: id
+              type: type
+            meta:
+              paging:
+                total: 0
+                limit: 6
+            links:
+              related: https://openapi-generator.tech
+              self: https://openapi-generator.tech
+        attributes:
+          firstName: firstName
+          lastName: lastName
+          email: email
+        links:
+          self: https://openapi-generator.tech
+        id: id
+        type: betaTesters
+      properties:
+        attributes:
+          $ref: '#/components/schemas/BetaTester.Attributes'
+        id:
+          description: The opaque resource ID that uniquely identifies the resource.
+          type: string
+        relationships:
+          $ref: '#/components/schemas/BetaTester.Relationships'
+        type:
+          description: The resource type
+          example: betaTesters
+          type: string
+        links:
+          $ref: '#/components/schemas/ResourceLinks'
+      required:
+      - id
+      - type
+    BetaTester.Attributes:
+      example:
+        firstName: firstName
+        lastName: lastName
+        email: email
+      properties:
+        email:
+          description: The beta tester's email address, used for sending beta testing
+            invitations.
+          format: email
+          type: string
+        firstName:
+          description: The beta tester's first name.
+          type: string
+        inviteType:
+          $ref: '#/components/schemas/BetaInviteType'
+        lastName:
+          description: The beta tester's last name.
+          type: string
+    BetaTester.Relationships:
+      example:
+        betaGroups:
+          data:
+          - id: id
+            type: type
+          - id: id
+            type: type
+          meta:
+            paging:
+              total: 0
+              limit: 6
+          links:
+            related: https://openapi-generator.tech
+            self: https://openapi-generator.tech
+        builds:
+          data:
+          - id: id
+            type: type
+          - id: id
+            type: type
+          meta:
+            paging:
+              total: 0
+              limit: 6
+          links:
+            related: https://openapi-generator.tech
+            self: https://openapi-generator.tech
+        apps:
+          data:
+          - id: id
+            type: type
+          - id: id
+            type: type
+          meta:
+            paging:
+              total: 0
+              limit: 6
+          links:
+            related: https://openapi-generator.tech
+            self: https://openapi-generator.tech
+      properties:
+        apps:
+          $ref: '#/components/schemas/BetaTester.Relationships.Apps'
+        betaGroups:
+          $ref: '#/components/schemas/BetaTester.Relationships.BetaGroups'
+        builds:
+          $ref: '#/components/schemas/BetaTester.Relationships.Builds'
+    BetaTester.Relationships.Apps:
+      example:
+        data:
+        - id: id
+          type: type
+        - id: id
+          type: type
+        meta:
+          paging:
+            total: 0
+            limit: 6
+        links:
+          related: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CommonData'
+          type: array
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+    BetaTester.Relationships.BetaGroups:
+      example:
+        data:
+        - id: id
+          type: type
+        - id: id
+          type: type
+        meta:
+          paging:
+            total: 0
+            limit: 6
+        links:
+          related: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CommonData'
+          type: array
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+    BetaTester.Relationships.Builds:
+      example:
+        data:
+        - id: id
+          type: type
+        - id: id
+          type: type
+        meta:
+          paging:
+            total: 0
+            limit: 6
+        links:
+          related: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CommonData'
+          type: array
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+    BetaGroupCreateRequest:
+      description: A request containing a single resource.
+      example:
+        data:
+          relationships:
+            app:
+              data:
+                id: id
+                type: type
+            builds:
+              data:
+              - id: id
+                type: type
+              - id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              link:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            betaTesters:
+              data:
+              - id: id
+                type: type
+              - id: id
+                type: type
+          attributes:
+            publicLinkLimit: 0
+            publicLinkEnabled: true
+            name: name
+            publicLinkLimitEnabled: true
+          type: betaGroups
+      properties:
+        data:
+          $ref: '#/components/schemas/BetaGroupCreateRequest.Data'
+      required:
+      - data
+    BetaGroupCreateRequest.Data:
+      example:
+        relationships:
+          app:
+            data:
+              id: id
+              type: type
+          builds:
+            data:
+            - id: id
+              type: type
+            - id: id
+              type: type
+            meta:
+              paging:
+                total: 0
+                limit: 6
+            link:
+              related: https://openapi-generator.tech
+              self: https://openapi-generator.tech
+          betaTesters:
+            data:
+            - id: id
+              type: type
+            - id: id
+              type: type
+        attributes:
+          publicLinkLimit: 0
+          publicLinkEnabled: true
+          name: name
+          publicLinkLimitEnabled: true
+        type: betaGroups
+      properties:
+        attributes:
+          $ref: '#/components/schemas/BetaGroupCreateRequest.Data.Attributes'
+        relationships:
+          $ref: '#/components/schemas/BetaGroupCreateRequest.Data.Relationships'
+        type:
+          description: (Required) The resource type.
+          example: betaGroups
+          type: string
+      required:
+      - attributes
+      - relationships
+      - type
+    BetaGroupCreateRequest.Data.Attributes:
+      description: Attributes that describe a resource.
+      example:
+        publicLinkLimit: 0
+        publicLinkEnabled: true
+        name: name
+        publicLinkLimitEnabled: true
+      properties:
+        name:
+          description: (Required) The name for the beta group.
+          type: string
+        publicLinkEnabled:
+          description: A Boolean value that indicates whether a public link is enabled.
+            Enabling a link allows you to invite anyone outside of your team to beta
+            test your app. When you share this link, testers will be able to install
+            the beta version of your app on their devices in TestFlight and share
+            the link with others.
+          type: boolean
+        publicLinkLimit:
+          description: The maximum number of testers that can join this beta group
+            using the public link. Values must be between 1 and 10,000.
+          type: integer
+        publicLinkLimitEnabled:
+          description: A Boolean value that limits the number of testers who can join
+            the beta group using the public link.
+          type: boolean
+      required:
+      - name
+    BetaGroupCreateRequest.Data.Relationships:
+      example:
+        app:
+          data:
+            id: id
+            type: type
+        builds:
+          data:
+          - id: id
+            type: type
+          - id: id
+            type: type
+          meta:
+            paging:
+              total: 0
+              limit: 6
+          link:
+            related: https://openapi-generator.tech
+            self: https://openapi-generator.tech
+        betaTesters:
+          data:
+          - id: id
+            type: type
+          - id: id
+            type: type
+      properties:
+        app:
+          $ref: '#/components/schemas/BetaGroupCreateRequest.Data.Relationships.App'
+        betaTesters:
+          $ref: '#/components/schemas/BetaGroupCreateRequest.Data.Relationships.BetaTesters'
+        builds:
+          $ref: '#/components/schemas/BetaGroupCreateRequest.Data.Relationships.Builds'
+      required:
+      - app
+    BetaGroupCreateRequest.Data.Relationships.App:
+      example:
+        data:
+          id: id
+          type: type
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+      required:
+      - data
+    BetaGroupCreateRequest.Data.Relationships.BetaTesters:
+      example:
+        data:
+        - id: id
+          type: type
+        - id: id
+          type: type
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CommonData'
+          type: array
+    BetaGroupCreateRequest.Data.Relationships.Builds:
+      example:
+        data:
+        - id: id
+          type: type
+        - id: id
+          type: type
+        meta:
+          paging:
+            total: 0
+            limit: 6
+        link:
+          related: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CommonData'
+          type: array
+        link:
+          $ref: '#/components/schemas/CommonLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+    BetaGroupUpdateRequest:
+      description: A request containing a single resource.
+      example:
+        data:
+          attributes:
+            publicLinkLimit: 0
+            publicLinkEnabled: true
+            name: name
+            publicLinkLimitEnabled: true
+          id: id
+          type: betaGroups
+      properties:
+        data:
+          $ref: '#/components/schemas/BetaGroupUpdateRequest.Data'
+      required:
+      - data
+    BetaGroupUpdateRequest.Data:
+      example:
+        attributes:
+          publicLinkLimit: 0
+          publicLinkEnabled: true
+          name: name
+          publicLinkLimitEnabled: true
+        id: id
+        type: betaGroups
+      properties:
+        attributes:
+          $ref: '#/components/schemas/BetaGroupUpdateRequest.Data.Attributes'
+        id:
+          description: (Required) The opaque resource ID that uniquely identifies
+            the resource.
+          type: string
+        type:
+          description: (Required) The resource type.
+          example: betaGroups
+          type: string
+      required:
+      - id
+      - type
+    BetaGroupUpdateRequest.Data.Attributes:
+      description: Attributes that describe a resource.
+      example:
+        publicLinkLimit: 0
+        publicLinkEnabled: true
+        name: name
+        publicLinkLimitEnabled: true
+      properties:
+        name:
+          description: The name for the beta group.
+          type: string
+        publicLinkEnabled:
+          description: A Boolean value that indicates whether a public link is enabled.
+            Enabling a link allows you to invite anyone outside of your team to beta
+            test your app. When you share this link, testers will be able to install
+            the beta version of your app on their devices in TestFlight and share
+            the link with others.
+          type: boolean
+        publicLinkLimit:
+          description: The maximum number of testers that can join this beta group
+            using the public link. Values must be between 1 and 10,000.
+          type: integer
+        publicLinkLimitEnabled:
+          description: A Boolean value that limits the number of testers who can join
+            the beta group using the public link.
+          type: boolean
+    BetaGroupResponse:
+      description: A response containing a single resource.
+      example:
+        include: ""
+        data:
+          relationships:
+            app:
+              data:
+                id: id
+                type: type
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            builds:
+              data:
+                id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            betaTesters:
+              data:
+                id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+          attributes:
+            publicLinkLimit: 0
+            publicLink: https://openapi-generator.tech
+            publicLinkEnabled: true
+            createdDate: 2000-01-23T04:56:07.000+00:00
+            publicLinkId: publicLinkId
+            isInternalGroup: true
+            name: name
+            publicLinkLimitEnabled: true
+          links:
+            self: https://openapi-generator.tech
+          id: id
+          type: apps
+        links:
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          $ref: '#/components/schemas/BetaGroup'
+        include:
+          description: The requested relationship data.
+          oneOf:
+          - $ref: '#/components/schemas/App'
+          - $ref: '#/components/schemas/Build'
+          - $ref: '#/components/schemas/BetaTester'
+        links:
+          $ref: '#/components/schemas/DocumentLinks'
+      required:
+      - data
+      - links
+    BetaInviteType:
+      description: An invite type that indicates if a beta tester was invited by an
+        email invite or used a TestFlight public link to join a beta test.
+      enum:
+      - EMAIL
+      - PUBLIC_LINK
+      type: string
+    BetaTesterAppsLinkagesRequest:
+      description: A request containing the IDs of related resources.
+      example:
+        data:
+        - id: id
+          type: type
+        - id: id
+          type: type
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CommonData'
+          type: array
+      required:
+      - data
+    BetaTesterAppsLinkagesResponse:
+      description: A response containing a list of related resource IDs.
+      example:
+        data:
+        - id: id
+          type: type
+        - id: id
+          type: type
+        meta:
+          paging:
+            total: 0
+            limit: 6
+        links:
+          next: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+          first: https://openapi-generator.tech
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CommonData'
+          type: array
+        links:
+          $ref: '#/components/schemas/PagedDocumentLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+    BetaTesterBetaGroupsLinkagesRequest:
+      description: A request containing the IDs of related resources.
+      example:
+        data:
+        - id: id
+          type: type
+        - id: id
+          type: type
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CommonData'
+          type: array
+      required:
+      - data
+    BetaTesterBetaGroupsLinkagesResponse:
+      description: A response containing a list of related resource IDs.
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CommonData'
+          type: array
+        links:
+          $ref: '#/components/schemas/PagedDocumentLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+    BetaTesterBuildsLinkagesRequest:
+      description: A request containing the IDs of related resources.
+      example:
+        data:
+        - id: id
+          type: type
+        - id: id
+          type: type
+      properties:
+        data:
+          description: (Required) The types and IDs of related resources.
+          items:
+            $ref: '#/components/schemas/CommonData'
+          type: array
+    BetaTesterBuildsLinkagesResponse:
+      description: A response containing a list of related resource IDs.
+      example:
+        data:
+        - id: id
+          type: type
+        - id: id
+          type: type
+        meta:
+          paging:
+            total: 0
+            limit: 6
+        links:
+          next: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+          first: https://openapi-generator.tech
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CommonData'
+          type: array
+        links:
+          $ref: '#/components/schemas/PagedDocumentLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+    Build:
+      example:
+        relationships:
+          app:
+            data:
+              id: id
+              type: type
+            links:
+              related: https://openapi-generator.tech
+              self: https://openapi-generator.tech
+          individualTesters:
+            data:
+              id: id
+              type: type
+            meta:
+              paging:
+                total: 0
+                limit: 6
+            links:
+              related: https://openapi-generator.tech
+              self: https://openapi-generator.tech
+          betaGroups:
+            data:
+              id: id
+              type: type
+            meta:
+              paging:
+                total: 0
+                limit: 6
+            links:
+              related: https://openapi-generator.tech
+              self: https://openapi-generator.tech
+          preReleaseVersion:
+            data:
+              id: id
+              type: type
+            links:
+              related: https://openapi-generator.tech
+              self: https://openapi-generator.tech
+          betaAppReviewSubmission:
+            data:
+              id: id
+              type: type
+            links:
+              related: https://openapi-generator.tech
+              self: https://openapi-generator.tech
+          appEncryptionDeclaration:
+            data:
+              id: id
+              type: type
+            links:
+              related: https://openapi-generator.tech
+              self: https://openapi-generator.tech
+          buildBetaDetail:
+            data:
+              id: id
+              type: type
+            links:
+              related: https://openapi-generator.tech
+              self: https://openapi-generator.tech
+          betaBuildLocalizations:
+            data:
+              id: id
+              type: type
+            meta:
+              paging:
+                total: 0
+                limit: 6
+            links:
+              related: https://openapi-generator.tech
+              self: https://openapi-generator.tech
+        attributes:
+          minOsVersion: minOsVersion
+          processingState: PROCESSING
+          expired: true
+          iconAssetToken:
+            width: 6
+            templateUrl: templateUrl
+            height: 0
+          usesNonExemptEncryption: true
+          uploadedDate: uploadedDate
+          version: version
+          expirationDate: expirationDate
+        links:
+          self: https://openapi-generator.tech
+        id: id
+        type: builds
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Build.Attributes'
+        id:
+          description: (Required) The opaque resource ID that uniquely identifies
+            the resource.
+          type: string
+        relationships:
+          $ref: '#/components/schemas/Build.Relationships'
+        type:
+          description: (Required) The resource type.
+          example: builds
+          type: string
+        links:
+          $ref: '#/components/schemas/ResourceLinks'
+      required:
+      - id
+      - type
+    Build.Attributes:
+      description: Attributes that describe a resource.
+      example:
+        minOsVersion: minOsVersion
+        processingState: PROCESSING
+        expired: true
+        iconAssetToken:
+          width: 6
+          templateUrl: templateUrl
+          height: 0
+        usesNonExemptEncryption: true
+        uploadedDate: uploadedDate
+        version: version
+        expirationDate: expirationDate
+      properties:
+        expired:
+          description: A Boolean value that indicates if the build has expired. An
+            expired build is unavailable for testing.
+          type: boolean
+        iconAssetToken:
+          $ref: '#/components/schemas/ImageAsset'
+        minOsVersion:
+          description: The minimum operating system version needed to test a build.
+          type: string
+        processingState:
+          description: The processing state of the build indicating that it is not
+            yet available for testing.
+          enum:
+          - PROCESSING
+          - FAILED
+          - INVALID
+          - VALID
+          type: string
+        version:
+          description: The version number of the uploaded build.
+          type: string
+        usesNonExemptEncryption:
+          description: A Boolean value that indicates whether the build uses non-exempt
+            encryption.
+          type: boolean
+        uploadedDate:
+          description: The date and time the build was uploaded to App Store Connect.
+          format: datetime
+          type: string
+        expirationDate:
+          description: The date and time the build will auto-expire and no longer
+            be available for testing.
+          format: datetime
+          type: string
+    BuildsResponse:
+      description: A response containing a list of resources.
+      example:
+        include: ""
+        data:
+          relationships:
+            app:
+              data:
+                id: id
+                type: type
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            individualTesters:
+              data:
+                id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            betaGroups:
+              data:
+                id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            preReleaseVersion:
+              data:
+                id: id
+                type: type
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            betaAppReviewSubmission:
+              data:
+                id: id
+                type: type
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            appEncryptionDeclaration:
+              data:
+                id: id
+                type: type
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            buildBetaDetail:
+              data:
+                id: id
+                type: type
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+            betaBuildLocalizations:
+              data:
+                id: id
+                type: type
+              meta:
+                paging:
+                  total: 0
+                  limit: 6
+              links:
+                related: https://openapi-generator.tech
+                self: https://openapi-generator.tech
+          attributes:
+            minOsVersion: minOsVersion
+            processingState: PROCESSING
+            expired: true
+            iconAssetToken:
+              width: 6
+              templateUrl: templateUrl
+              height: 0
+            usesNonExemptEncryption: true
+            uploadedDate: uploadedDate
+            version: version
+            expirationDate: expirationDate
+          links:
+            self: https://openapi-generator.tech
+          id: id
+          type: builds
+        meta:
+          paging:
+            total: 0
+            limit: 6
+        links:
+          next: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+          first: https://openapi-generator.tech
+      properties:
+        data:
+          $ref: '#/components/schemas/Build'
+        include:
+          oneOf:
+          - $ref: '#/components/schemas/PrereleaseVersion'
+          - $ref: '#/components/schemas/BetaTester'
+          - $ref: '#/components/schemas/BetaBuild'
+          - $ref: '#/components/schemas/Localizaton'
+          - $ref: '#/components/schemas/AppEncryptionDeclaration'
+          - $ref: '#/components/schemas/BetaAppReviewSubmission'
+          - $ref: '#/components/schemas/App'
+          - $ref: '#/components/schemas/BuildBetaDetail'
+        links:
+          $ref: '#/components/schemas/PagedDocumentLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+      required:
+      - data
+      - links
+    ImageAsset:
+      description: An image asset, including its height, width, and template URL.
+      example:
+        width: 6
+        templateUrl: templateUrl
+        height: 0
+      properties:
+        templateUrl:
+          type: string
+        height:
+          type: integer
+        width:
+          type: integer
+    BetaTesterInvitationCreateRequest:
+      description: A request containing a single resource.
+      example:
+        data:
+          relationships:
+            app:
+              data:
+                id: id
+                type: type
+            betaTester:
+              data:
+                id: id
+                type: type
+          type: betaTesterInvitations
+      properties:
+        data:
+          $ref: '#/components/schemas/BetaTesterInvitationCreateRequest.Data'
+      required:
+      - data
+    BetaTesterInvitationCreateRequest.Data:
+      example:
+        relationships:
+          app:
+            data:
+              id: id
+              type: type
+          betaTester:
+            data:
+              id: id
+              type: type
+        type: betaTesterInvitations
+      properties:
+        relationships:
+          $ref: '#/components/schemas/BetaTesterInvitationCreateRequest.Data.Relationships'
+        type:
+          description: (Required) The resource type.
+          example: betaTesterInvitations
+          type: string
+      required:
+      - properties
+    BetaTesterInvitationCreateRequest.Data.Relationships:
+      example:
+        app:
+          data:
+            id: id
+            type: type
+        betaTester:
+          data:
+            id: id
+            type: type
+      properties:
+        app:
+          $ref: '#/components/schemas/BetaTesterInvitationCreateRequest.Data.Relationships.App'
+        betaTester:
+          $ref: '#/components/schemas/BetaTesterInvitationCreateRequest.Data.Relationships.BetaTester'
+      required:
+      - app
+      - betaTester
+    BetaTesterInvitationCreateRequest.Data.Relationships.App:
+      example:
+        data:
+          id: id
+          type: type
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+      required:
+      - data
+    BetaTesterInvitationCreateRequest.Data.Relationships.BetaTester:
+      example:
+        data:
+          id: id
+          type: type
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+      required:
+      - data
+    BetaTesterInvitationResponse:
+      description: A response containing a single resource.
+      example:
+        data:
+          links:
+            self: https://openapi-generator.tech
+          id: id
+          type: betaTesterInvitations
+        links:
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          $ref: '#/components/schemas/BetaTesterInvitation'
+        links:
+          $ref: '#/components/schemas/DocumentLinks'
+      required:
+      - data
+      - links
+    BetaTesterInvitation:
+      description: The data structure that represents the resource.
+      example:
+        links:
+          self: https://openapi-generator.tech
+        id: id
+        type: betaTesterInvitations
+      properties:
+        id:
+          description: (Required) The opaque resource ID that uniquely identifies
+            the resource.
+          type: string
+        type:
+          description: (Required) The resource type.
+          example: betaTesterInvitations
+          type: string
+        links:
+          $ref: '#/components/schemas/ResourceLinks'
+      required:
+      - id
+      - links
+      - type
+    Build.Relationships:
+      example:
+        app:
+          data:
+            id: id
+            type: type
+          links:
+            related: https://openapi-generator.tech
+            self: https://openapi-generator.tech
+        individualTesters:
+          data:
+            id: id
+            type: type
+          meta:
+            paging:
+              total: 0
+              limit: 6
+          links:
+            related: https://openapi-generator.tech
+            self: https://openapi-generator.tech
+        betaGroups:
+          data:
+            id: id
+            type: type
+          meta:
+            paging:
+              total: 0
+              limit: 6
+          links:
+            related: https://openapi-generator.tech
+            self: https://openapi-generator.tech
+        preReleaseVersion:
+          data:
+            id: id
+            type: type
+          links:
+            related: https://openapi-generator.tech
+            self: https://openapi-generator.tech
+        betaAppReviewSubmission:
+          data:
+            id: id
+            type: type
+          links:
+            related: https://openapi-generator.tech
+            self: https://openapi-generator.tech
+        appEncryptionDeclaration:
+          data:
+            id: id
+            type: type
+          links:
+            related: https://openapi-generator.tech
+            self: https://openapi-generator.tech
+        buildBetaDetail:
+          data:
+            id: id
+            type: type
+          links:
+            related: https://openapi-generator.tech
+            self: https://openapi-generator.tech
+        betaBuildLocalizations:
+          data:
+            id: id
+            type: type
+          meta:
+            paging:
+              total: 0
+              limit: 6
+          links:
+            related: https://openapi-generator.tech
+            self: https://openapi-generator.tech
+      properties:
+        app:
+          $ref: '#/components/schemas/Build.Relationships.App'
+        appEncryptionDeclaration:
+          $ref: '#/components/schemas/Build.Relationships.AppEncryptionDeclaration'
+        individualTesters:
+          $ref: '#/components/schemas/Build.Relationships.IndividualTesters'
+        preReleaseVersion:
+          $ref: '#/components/schemas/Build.Relationships.PreReleaseVersion'
+        betaBuildLocalizations:
+          $ref: '#/components/schemas/Build.Relationships.BetaBuildLocalizations'
+        betaGroups:
+          $ref: '#/components/schemas/Build.Relationships.BetaGroups'
+        buildBetaDetail:
+          $ref: '#/components/schemas/Build.Relationships.BuildBetaDetail'
+        betaAppReviewSubmission:
+          $ref: '#/components/schemas/Build.Relationships.BetaAppReviewSubmission'
+    Build.Relationships.App:
+      example:
+        data:
+          id: id
+          type: type
+        links:
+          related: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+    Build.Relationships.AppEncryptionDeclaration:
+      example:
+        data:
+          id: id
+          type: type
+        links:
+          related: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+    Build.Relationships.IndividualTesters:
+      example:
+        data:
+          id: id
+          type: type
+        meta:
+          paging:
+            total: 0
+            limit: 6
+        links:
+          related: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+    Build.Relationships.PreReleaseVersion:
+      example:
+        data:
+          id: id
+          type: type
+        links:
+          related: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+    Build.Relationships.BetaBuildLocalizations:
+      example:
+        data:
+          id: id
+          type: type
+        meta:
+          paging:
+            total: 0
+            limit: 6
+        links:
+          related: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+    Build.Relationships.BetaGroups:
+      example:
+        data:
+          id: id
+          type: type
+        meta:
+          paging:
+            total: 0
+            limit: 6
+        links:
+          related: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+        meta:
+          $ref: '#/components/schemas/PagingInformation'
+    Build.Relationships.BuildBetaDetail:
+      example:
+        data:
+          id: id
+          type: type
+        links:
+          related: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+    Build.Relationships.BetaAppReviewSubmission:
+      example:
+        data:
+          id: id
+          type: type
+        links:
+          related: https://openapi-generator.tech
+          self: https://openapi-generator.tech
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+        links:
+          $ref: '#/components/schemas/CommonLinks'
+    CommonData:
+      example:
+        id: id
+        type: type
+      properties:
+        id:
+          description: The opaque resource ID that uniquely identifies the resource.
+          type: string
+        type:
+          description: The resource type.
+          type: string
+      required:
+      - id
+      - type
+    CommonLinks:
+      example:
+        related: https://openapi-generator.tech
+        self: https://openapi-generator.tech
+      properties:
+        related:
+          format: uri
+          type: string
+        self:
+          format: uri
+          type: string
+    DocumentLinks:
+      example:
+        self: https://openapi-generator.tech
+      properties:
+        self:
+          description: The link that produced the current document.
+          format: uri
+          type: string
+      required:
+      - self
+    CommonErrorResponse:
+      description: Detailed error information returned in the response body whenever
+        an API request is not successful.
+      properties:
+        errors:
+          items:
+            $ref: '#/components/schemas/CommonErrorResponse.Errors'
+          type: array
+    CommonErrorResponse.Errors:
+      description: The details about one error that is returned when an API request
+        is not successful.
+      properties:
+        code:
+          description: (Required) A machine-readable code indicating the type of error.
+            The code is a hierarchical value with levels of specificity separated
+            by the '.' character. This value is parseable for programmatic error handling
+            in code.
+          type: string
+        status:
+          description: (Required) The HTTP status code of the error. This status code
+            usually matches the response's status code; however, if the request produces
+            multiple errors, these two codes may differ.
+          type: string
+        id:
+          description: The unique ID of a specific instance of an error, request,
+            and response. Use this ID when providing feedback to or debugging issues
+            with Apple.
+          type: string
+        title:
+          description: (Required) A summary of the error. Do not use this field for
+            programmatic error handling.
+          type: string
+        detail:
+          description: (Required) A detailed explanation of the error. Do not use
+            this field for programmatic error handling.
+          type: string
+        source:
+          description: One of two possible types of values. source.parameter, provided
+            when a query parameter produced the error, or source.JsonPointer, provided
+            when a problem with the entity produced the error.
+          oneOf:
+          - $ref: '#/components/schemas/CommonErrorResponse.Errors.JsonPointer'
+          - $ref: '#/components/schemas/CommonErrorResponse.Errors.Parameter'
+      required:
+      - code
+      - detail
+      - status
+      - title
+    CommonErrorResponse.Errors.JsonPointer:
+      description: An object containing the JSON pointer that indicates the location
+        of the error.
+      properties:
+        pointer:
+          description: A JSON pointer that indicates the location in the request entity
+            where the error originates.
+          type: string
+    CommonErrorResponse.Errors.Parameter:
+      description: An object containing the query parameter that produced the error.
+      properties:
+        parameter:
+          description: The query parameter that produced the error.
+          type: string
+    PagedDocumentLinks:
+      description: Links related to the response document, including paging links.
+        All the response data constitutes a document.
+      example:
+        next: https://openapi-generator.tech
+        self: https://openapi-generator.tech
+        first: https://openapi-generator.tech
+      properties:
+        first:
+          description: The link to the first page of documents.
+          format: uri
+          type: string
+        next:
+          description: The link to the next page of documents.
+          format: uri
+          type: string
+        self:
+          description: (Required) The link that produced the current document.
+          format: uri
+          type: string
+      required:
+      - self
+    PagingInformation:
+      example:
+        paging:
+          total: 0
+          limit: 6
+      properties:
+        paging:
+          $ref: '#/components/schema/PagingInformation.Page'
+      required:
+      - paging
+    PagingInformation.Page:
+      description: The paging information details.
+      example:
+        total: 0
+        limit: 6
+      properties:
+        total:
+          description: The total number of resources matching your request.
+          type: integer
+        limit:
+          description: The maximum number of resources to return per page, from 0
+            to 200.
+          type: integer
+      required:
+      - limit
+      - properties
+    ResourceLinks:
+      example:
+        self: https://openapi-generator.tech
+      properties:
+        self:
+          description: The link to the resource.
+          format: uri
+          type: string
+      required:
+      - self
